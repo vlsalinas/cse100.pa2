@@ -40,7 +40,7 @@ private:
   // Add your own data members and methods here
   
 	//hash table
-	std::unordered_set<std::string> hashDict;
+	std::unordered_set<std::string>* hashDict;
 };
 
 #endif // DICTIONARY_HASHTABLE_H

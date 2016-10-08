@@ -14,7 +14,7 @@
  * Create a new Dictionary that uses a BST back end 
  */
 DictionaryBST::DictionaryBST(){
-	std::set<std::string> setBST;
+	setBST = new std::set<std::string>;
 }
 
 /* Params: String word (word to be inserted)
@@ -26,7 +26,7 @@ bool DictionaryBST::insert(std::string word) {
 	bool inserted = false; 
 
 	//insert a word into a BST
-	inserted = setBST.insert(word).second;
+	inserted = setBST->insert(word).second;
 	return inserted;
 }
 
@@ -39,10 +39,10 @@ bool DictionaryBST::find(std::string word) const {
 	std::set<std::string>::const_iterator found;
 
 	//find the word in the BST
-	found = setBST.find(word);
+	found = setBST->find(word);
 
 	//check if the word was found
-	if( found == setBST.end() ) {
+	if( found == setBST->end() ) {
 		return false;
 	}
 
@@ -56,6 +56,6 @@ bool DictionaryBST::find(std::string word) const {
  */
 DictionaryBST::~DictionaryBST() {
 	//go through the BST and delete
-	setBST.clear();
-	setBST.~set();
+	setBST->~set();
+	delete setBST;
 }

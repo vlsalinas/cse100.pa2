@@ -1,5 +1,9 @@
 /**
- *  CSE 100 PA3 C++ Autocomplete
+ *  Name: Niral Patel and Taylor Lew
+ *  Date: October 8, 2016
+ *  Overview: methods for creating a dictionary with a Ternary Trie
+ *  Assignement #:2 
+ *  CSE 100 PA2 C++ Autocomplete
  *  Authors: Jor-el Briones, Christine Alvarado
  */
 

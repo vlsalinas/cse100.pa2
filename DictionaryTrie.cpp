@@ -1,3 +1,11 @@
+/**
+ *  Name: Niral Patel and Taylor Lew
+ *  Date: October 8, 2016
+ *  Overview: Creates a dictionary with a Ternary Trie.  Implements insert
+ *						and find.
+ *  Assignement #:2 
+ */
+
 #include "util.h"
 #include "DictionaryTrie.h"
 

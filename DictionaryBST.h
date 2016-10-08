@@ -38,7 +38,7 @@ public:
 
 private:
   // Add your own data members and methods here
-  std::set<std::string> setBST; 
+  std::set<std::string>* setBST; 
 };
 
 #endif // DICTIONARY_BST_H

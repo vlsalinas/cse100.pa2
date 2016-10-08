@@ -16,7 +16,8 @@
 DictionaryHashtable::DictionaryHashtable() {
 
 	//create an unordered set for hashtable
-	std::unordered_set<std::string> hashDict;
+	hashDict =
+			 new std::unordered_set<std::string>;
 }
 
 /* Param: String word (word to be inserted)
@@ -28,7 +29,7 @@ bool DictionaryHashtable::insert(std::string word) {
 	bool inserted = false; 
 
 	//insert a word into a hashtable
-	inserted = hashDict.insert(word).second;
+	inserted = hashDict->insert(word).second;
 	return inserted;
 
 }
@@ -42,10 +43,10 @@ bool DictionaryHashtable::find(std::string word) const {
 	std::unordered_set<std::string>::const_iterator found;
 
 	//find the word in the hashtable
-	found = hashDict.find(word);
+	found = hashDict->find(word);
 
 	//check if the word was found
-	if( found == hashDict.end() ) {
+	if( found == hashDict->end() ) {
 		return false;
 	}
 
@@ -62,6 +63,6 @@ bool DictionaryHashtable::find(std::string word) const {
 DictionaryHashtable::~DictionaryHashtable(){
 
 	//go through the hashtable and delete
-	hashDict.clear();
-	hashDict.~unordered_set();
+	hashDict->~unordered_set();
+	delete hashDict;
 }
