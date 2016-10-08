@@ -1,3 +1,10 @@
+/**
+ * Name: Niral Patel and Taylor Lew
+ * Date: October 7, 2016
+ * Overview: Tests the dictionaries
+ * Assignment #: 2
+ */
+
 #include<iostream>
 #include<string>
 #include<algorithm>
@@ -26,8 +33,9 @@ int main(int argc, char** argv)
   //Initialize data structures
   DictionaryBST d_bst;
   DictionaryHashtable d_ht;
-  DictionaryTrie dt;
-  int t_bst, t_ht, tt;
+  //DictionaryTrie dt;
+  int t_bst, t_ht; 
+	//tt;
 
   words.push_back("harry");
   words.push_back("sriram");
@@ -45,7 +53,7 @@ int main(int argc, char** argv)
       cout << "Inserting: \"" << *wit << "\"... ";
       t_bst = d_bst.insert(*wit);
       t_ht = d_ht.insert(*wit);
-      tt = dt.insert(*wit, 1);
+      //tt = dt.insert(*wit, 1);
       //cout << t_bst << " " << t_ht << " "<< tt << "... ";
       if(!t_bst)
 	{
@@ -55,18 +63,19 @@ int main(int argc, char** argv)
 	{
 	  cout << "failed for DictionaryHashset... ";
 	}
-      if(!tt)
-	{
-	  cout << "failed for DictionaryTrie... ";
-	}
-      if(t_bst && t_ht && tt)
+//      if(!tt)
+//	{
+//	  cout << "failed for DictionaryTrie... ";
+//	}
+      if(t_bst && t_ht) //&& tt)
 	{
 	  cout << "PASSED! :D ";
 	}
       cout << endl;
     }
 
-  cout << endl << "Re-inserting elements that were just inserted into Dictionaries..." << endl;
+  cout << endl << "Re-inserting elements that were just inserted into " << 
+								"Dictionaries..." << endl;
 
   wit = words.begin();
   wen = words.end();
@@ -75,7 +84,7 @@ int main(int argc, char** argv)
       cout << "Inserting: \"" << *wit << "\"... ";
       t_bst = d_bst.insert(*wit);
       t_ht = d_ht.insert(*wit);
-      tt = dt.insert(*wit, 0);
+   //   tt = dt.insert(*wit, 0);
       if(t_bst)
         {
           cout << "failed for DictionaryBST... ";
@@ -84,11 +93,11 @@ int main(int argc, char** argv)
         {
           cout << "failed for DictionaryHashset... ";
         }
-      if(tt)
-        {
-          cout << "failed for DictionaryTrie... ";
-        }
-      if(!t_bst && !t_ht && !tt)
+     // if(tt)
+       // {
+         // cout << "failed for DictionaryTrie... ";
+       // }
+      if(!t_bst && !t_ht) //&& !tt)
         {
           cout << "PASSED! :D ";
         }

@@ -1,5 +1,9 @@
 /**
- *  CSE 100 PA3 C++ Autocomplete
+ *	Name: Niral Patel and Taylor Lew
+ *	Date: October 7, 2016
+ *	Overview: Contains the methods for creating a dictionary with a BST.
+ *	Assignment #: 2
+ *  CSE 100 PA2 C++ Autocomplete
  *  Authors: Jor-el Briones, Christine Alvarado
  */
 
@@ -7,6 +11,7 @@
 #define DICTIONARY_BST_H
 
 #include <string>
+#include <set>
 
 /**
  *  The class for a dictionary ADT, implemented as a BST
@@ -33,6 +38,7 @@ public:
 
 private:
   // Add your own data members and methods here
+  std::set<std::string> setBST; 
 };
 
 #endif // DICTIONARY_BST_H

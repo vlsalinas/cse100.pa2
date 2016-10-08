@@ -1,4 +1,8 @@
 /**
+ *  Niral Patel and Taylor Lew
+ *  October 7, 2016
+ *  All of the methods for creating a dictionary with a hashtable
+ *  PA2
  *  CSE 100 PA3 C++ Autocomplete
  *  Authors: Jor-el Briones, Christine Alvarado
  */
@@ -7,6 +11,7 @@
 #define DICTIONARY_HASHTABLE_H
 
 #include <string>
+#include <unordered_set>
 
 /**
  *  The class for a dictionary ADT, implemented as a Hashtable
@@ -33,6 +38,9 @@ public:
 
 private:
   // Add your own data members and methods here
+  
+	//hash table
+	std::unordered_set<std::string> hashDict;
 };
 
 #endif // DICTIONARY_HASHTABLE_H
