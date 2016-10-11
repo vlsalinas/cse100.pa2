@@ -43,21 +43,20 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq) {
 	if( word.length() == 0 ) {
 		return false;
 	}
-  //curr = helpFind( curr, word, index );
-	
+
 	//letter not in hashmap
 	//until the end of the word
-	while( index < word.length() - 1 ) {
-		
+	while( index < word.length() ) {
+		char c = word.at( index );	
 		//if node is not there
-		search = curr->letters.find( word.at( index ) );
+		search = curr->letters.find( c );
 		if( search == curr->letters.end()  ) {
 			//add a new node
 			DictionaryTrieNode* next = new DictionaryTrieNode();
 			adding = curr->letters.insert( std::pair<char, DictionaryTrieNode* >
-																		 (word.at( index ), next) ).first;
+																		 (c, next) ).first;
 			curr = adding->second;
-			curr->myCharacter = word.at( index );
+			curr->myCharacter = c;
 		}
 		
 		else {
@@ -66,9 +65,18 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq) {
 		}
 		index++;
 	}
+
+	//check for last node in word path
 	if( curr->isWord ) {
 		return false;
 	}
+
+	//insert word node
+	DictionaryTrieNode* end = new DictionaryTrieNode();
+	adding = curr->letters.insert( std::pair<char, DictionaryTrieNode* >
+														 (word.at( word.length() - 1), end) ).first;
+
+	//set isWord label
 	curr->isWord = true;
 	return true;
 }
@@ -86,14 +94,13 @@ bool DictionaryTrie::find(std::string word) const {
 //		check for pointer at that character in hashmap
 //		*** DictionaryTrieNode.letters.at( key/char )***
 	//index of the string
-	unsigned static int index = 0;
+	unsigned int index = 0;
 	//current node
 	DictionaryTrieNode* curr = root;
 	std::unordered_map<char, DictionaryTrieNode*>::iterator search;
 
-	//curr = helpFind( curr, word, index );
 	//find the word
-	while( index < word.length() - 1 ) {
+	while( index < word.length() ) {
 		
 		//search for the character
 		search = curr->letters.find( word.at( index ) );
@@ -109,7 +116,7 @@ bool DictionaryTrie::find(std::string word) const {
 	}
 	
 	//checking curr
-	if( curr->isWord == true && (index == word.length() - 1) ) {
+	if( curr->isWord == true ) {
 		return true;
 	}
 
