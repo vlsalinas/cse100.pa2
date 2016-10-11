@@ -41,13 +41,13 @@ int main(int argc, char** argv)
   words.push_back("cse");
   words.push_back("crucio");
   words.push_back("autocomplete");
+  words.push_back("auto");
  
 	nope.insert("sirius");
 	nope.insert("taylor");
 	nope.insert("sus");
 	nope.insert("tic tacs");
 	nope.insert("hello");
-	nope.insert("auto");
   
   cout << "Inserting into Dictionaries..." << endl;
 
@@ -169,6 +169,163 @@ int main(int argc, char** argv)
 	  cout << "failed for DictionaryTrie... ";
 	}
       if(!t_bst && !t_ht && !tt)
+	{
+	  cout << "PASSED! :D ";
+	}
+      cout << endl;
+    }
+/* Tests #2 */
+  //Initialize words
+  vector<std::string> words2;
+  vector<string>::iterator wit2;
+  vector<string>::iterator wen2;
+  //initialize nonwords
+  set<string> nope2;
+  set<string>::iterator nit2;
+  set<string>::iterator nen2;
+
+  //Initialize data structures
+  DictionaryBST d_bst2;
+  DictionaryHashtable d_ht2;
+  DictionaryTrie dt2;
+  int t_bst2, t_ht2, tt2;
+
+  words2.push_back("i");
+  words2.push_back("just");
+  words2.push_back("met");
+  words2.push_back("this");
+  words2.push_back("is");
+  words2.push_back("crazy");
+  words2.push_back("call");
+  words2.push_back("me");
+  words2.push_back("maybe");
+ 
+	nope2.insert("rebecca");
+	nope2.insert("may");
+	nope2.insert("his");
+	nope2.insert("call me");
+	nope2.insert("sing");
+  
+  cout << "Inserting into Dictionaries..." << endl;
+
+  wit2 = words2.begin();
+  wen2 = words2.end();
+  for(; wit2 != wen2; ++wit2)
+    {
+      cout << "Inserting: \"" << *wit2 << "\"... ";
+      t_bst2 = d_bst2.insert(*wit2);
+      t_ht2 = d_ht2.insert(*wit2);
+      tt2 = dt2.insert(*wit2, 1);
+      cout << t_bst2 << " " << t_ht2 << " "<< tt2 << "... ";
+      if(!t_bst2)
+	{
+	  cout << "failed for DictionaryBST... ";
+	}
+      if(!t_ht2)
+	{
+	  cout << "failed for DictionaryHashset... ";
+	}
+      if(!tt2)
+	{
+	  cout << "failed for DictionaryTrie... ";
+	}
+      if(t_bst2 && t_ht2 && tt2)
+	{
+	  cout << "PASSED! :D ";
+	}
+      cout << endl;
+    }
+
+  cout << endl << "Re-inserting elements that were just inserted into " << 
+								"Dictionaries..." << endl;
+
+  wit2 = words2.begin();
+  wen2 = words2.end();
+  for(; wit2 != wen2; ++wit2)
+    {
+      cout << "Inserting: \"" << *wit2 << "\"... ";
+      t_bst2 = d_bst2.insert(*wit2);
+      t_ht2 = d_ht2.insert(*wit2);
+      tt2 = dt2.insert(*wit2, 0);
+      if(t_bst2)
+        {
+          cout << "failed for DictionaryBST... ";
+        }
+      if(t_ht2)
+        {
+          cout << "failed for DictionaryHashset... ";
+        }
+      if(tt2)
+        {
+          cout << "failed for DictionaryTrie... ";
+        }
+      if(!t_bst2 && !t_ht2 && !tt2)
+        {
+          cout << "PASSED! :D ";
+        }
+      cout << endl;
+    }
+
+  cout << endl;
+
+  
+/*You are supposed to add more test cases in this file */
+  /* Searching for inserted words */
+  cout << "Finding in Dictionaries..." << endl;
+
+  wit2 = words2.begin();
+  wen2 = words2.end();
+  for(; wit2 != wen2; ++wit2)
+    {
+      cout << "Finding: \"" << *wit2 << "\"... ";
+      t_bst2 = d_bst2.find(*wit2);
+      t_ht2 = d_ht2.find(*wit2);
+      tt2 = dt2.find(*wit2);
+      cout << t_bst2 << " " << t_ht2 << " "<< tt2 << "... ";
+      if(!t_bst2)
+	{
+	  cout << "failed for DictionaryBST... ";
+	}
+      if(!t_ht2)
+	{
+	  cout << "failed for DictionaryHashset... ";
+	}
+      if(!tt2)
+	{
+	  cout << "failed for DictionaryTrie... ";
+	}
+      if(t_bst2 && t_ht2 && tt2)
+	{
+	  cout << "PASSED! :D ";
+	}
+      cout << endl;
+    }
+
+	/* Searching for nonexistent words */
+  cout << "Finding Nonexistents in Dictionaries..." << endl;
+
+  nit2 = nope2.begin();
+  nen2 = nope2.end();
+  for(; nit2 != nen2; ++nit2)
+    {
+      cout << "Finding: \"" << *nit2 << "\"... ";
+      t_bst2 = d_bst2.find(*nit2);
+      t_ht2 = d_ht2.find(*nit2);
+      tt2 = dt2.find(*nit2);
+      cout << t_bst2 << " " << t_ht2 << " "<< tt2 << "... ";
+      if(t_bst2)
+	{
+	  cout << "failed for DictionaryBST... ";
+	}
+      if(t_ht2)
+	{
+	  cout << "failed for DictionaryHashset... ";
+	}
+      if(tt2)
+	{
+	  cout << "failed for DictionaryTrie... ";
+	}
+      if(!t_bst2 && !t_ht2 && !tt2)
 	{
 	  cout << "PASSED! :D ";
 	}
