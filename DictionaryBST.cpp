@@ -56,6 +56,5 @@ bool DictionaryBST::find(std::string word) const {
  */
 DictionaryBST::~DictionaryBST() {
 	//go through the BST and delete
-	setBST->~set();
 	delete setBST;
 }

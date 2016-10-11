@@ -63,6 +63,5 @@ bool DictionaryHashtable::find(std::string word) const {
 DictionaryHashtable::~DictionaryHashtable(){
 
 	//go through the hashtable and delete
-	hashDict->~unordered_set();
 	delete hashDict;
 }

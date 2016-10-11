@@ -12,15 +12,16 @@
 
 #include <vector>
 #include <string>
+#include <unordered_map>
 
+class DictionaryTrieNode;
 /**
  *  The class for a dictionary ADT, implemented as a trie
  *  You may implement this class as either a mulit-way trie
  *  or a ternary search trie, but you must use one or the other.
  *
  */
-class DictionaryTrie
-{
+class DictionaryTrie {
 public:
 
   /* Create a new Dictionary that uses a Trie back end */
@@ -53,6 +54,46 @@ public:
 
 private:
   // Add your own data members and methods here
+   
+	/* root node for trie */
+	DictionaryTrieNode* root;
+
+	/* helper method for find/insert */
+	DictionaryTrieNode* helpFind( DictionaryTrieNode* current, 
+																std::string word, unsigned int 
+																index ) const;
 };
 
+/* Helper class for Trie Nodes 
+ */
+class DictionaryTrieNode {
+public: 
+
+	/* Create a new Dictionary Trie Node for the Multiway trie 
+   */
+	DictionaryTrieNode();
+
+	/* Default destructor. Delete this node and all it's data.
+   */
+  ~DictionaryTrieNode();
+
+	/** Methods needed for the node 
+   */
+
+	/* Traverse down the trie */
+	DictionaryTrieNode* searchNext( char c );
+
+	/* set of letters */
+	std::unordered_map<char, DictionaryTrieNode *> letters;
+
+	/* boolean for whether it is a word node or not */
+	bool isWord;
+
+	/* char pointing to this node */
+	char myCharacter;
+
+private:
+	
+};	 
+	 
 #endif // DICTIONARY_TRIE_H
