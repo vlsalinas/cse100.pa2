@@ -92,6 +92,9 @@ public:
 	/* char pointing to this node */
 	char myCharacter;
 
+	/* frequency */
+	unsigned int frequency;
+
 private:
 	
 };	 

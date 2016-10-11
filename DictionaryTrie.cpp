@@ -16,7 +16,6 @@
  * Create a new Dictionary that uses a Trie back end 
  */
 DictionaryTrie::DictionaryTrie(){
-//TODO
 	// set root to empty set
 	root = new DictionaryTrieNode();
 }
@@ -28,7 +27,6 @@ DictionaryTrie::DictionaryTrie(){
  */
 bool DictionaryTrie::insert(std::string word, unsigned int freq) {
 
-	//TODO
 	//index of the string
 	unsigned int index = 0;
 
@@ -68,6 +66,12 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq) {
 
 	//check for last node in word path
 	if( curr->isWord ) {
+
+		//check for duplicate frequency 
+		if( curr->frequency < freq ) {
+			curr->frequency = freq;
+		}
+
 		return false;
 	}
 
@@ -78,6 +82,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq) {
 
 	//set isWord label
 	curr->isWord = true;
+	curr->frequency = freq;
 	return true;
 }
 
@@ -87,13 +92,6 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq) {
  */
 bool DictionaryTrie::find(std::string word) const {
 
-//TODO
-//if next letter of word is not in set (call checkInSet)
-//		call addToSet
-//if next letter of word is in set
-//		check for pointer at that character in hashmap
-//		*** DictionaryTrieNode.letters.at( key/char )***
-	//index of the string
 	unsigned int index = 0;
 	//current node
 	DictionaryTrieNode* curr = root;
@@ -123,33 +121,6 @@ bool DictionaryTrie::find(std::string word) const {
 	return false;
 }
 
-/* Param: DictionaryTrieNode which is the current node being looked at
- *				word which is the string being searched for in the dictionary
- *				index of where it is in the string
- * Return: Pointer to the word node in the dictionary trie or a nullptr 
- *				 if it doesn't exist.
- * Helps the find/insert methods by using recursion to search depth-first down
- *				 the trie
- */
-DictionaryTrieNode* DictionaryTrie::helpFind( DictionaryTrieNode* current, 
-									std::string word, unsigned int index ) const {
-	//Node being currently looked at	
-	DictionaryTrieNode* searching = current;
-	
-	//check that index is out of bounds
-	if( index == word.length() ) {
-		return searching;
-	}
-
-	//check if the character is in the hash map
-	if( searching->letters.find( word.at( index ) ) != searching->letters.end() ) {
-		index++;
-		helpFind( searching->letters.at( word.at( index ) ), word, index );
-	}
-
-	return searching;
-}
-
 /* Return up to num_completions of the most frequent completions
  * of the prefix, such that the completions are words in the dictionary.
  * These completions should be listed from most frequent to least.
@@ -171,7 +142,6 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix,
  * Return: None.
  * Destructor for trie 
  */
-//TODO
 DictionaryTrie::~DictionaryTrie() {
 	//traverse trie in in-order using helper method
 	delete root;
@@ -182,7 +152,6 @@ DictionaryTrie::~DictionaryTrie() {
  * Return: None.
  * Constructor for Node 
  */
-//TODO
 DictionaryTrieNode::DictionaryTrieNode() {
 	// Initialized all fields of the Node class object
 	isWord = false;
@@ -193,7 +162,6 @@ DictionaryTrieNode::DictionaryTrieNode() {
  * Return: A pointer to the next node
  * searchNext method 
  */
-//TODO
 DictionaryTrieNode* DictionaryTrieNode::searchNext( char c ) {
 	//pointer to be returned
 	DictionaryTrieNode * next;
@@ -209,7 +177,6 @@ DictionaryTrieNode* DictionaryTrieNode::searchNext( char c ) {
  * Return: None.
  * Destructor for DictionaryTrieNode 
  */
-//TODO
 DictionaryTrieNode::~DictionaryTrieNode() {
 	//delete the hash map
 	//iterate through trie
