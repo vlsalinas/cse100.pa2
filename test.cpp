@@ -14,6 +14,7 @@
 #include "DictionaryTrie.h"
 #include "DictionaryBST.h"
 #include "DictionaryHashtable.h"
+#include <fstream>
 #define LETTERS 26
 using namespace std;
 
@@ -332,6 +333,103 @@ int main(int argc, char** argv)
       cout << endl;
     }
 
-  
+	/* Testing Trie dictionary */
+	DictionaryTrie dt1;
+	int resultTrie = 0;
+	std::ifstream ifs;
+	ifs.open("dictionary/freq1.txt", std::ifstream::in);
+  Utils::load_dict(dt1,ifs);
+
+	//find words in trie dictionary
+	resultTrie = dt1.find("a baby and she");
+	if(!resultTrie) {
+		cout << "Test failed";
+	}
+	else {
+		cout << "Passed :D";
+	}
+	
+	resultTrie = dt1.find("a bargain compared with");
+	if(!resultTrie) {
+		cout << "Test failed";
+	}
+	else {
+		cout << "Passed :D";
+	}
+
+	resultTrie = dt1.find("a broad view");
+	if(!resultTrie) {
+		cout << "Test failed";
+	}
+	else {
+		cout << "Passed :D";
+	}
+	ifs.close();
+
+	/* Testing Hashtable dictionary */
+	DictionaryHashtable dh1;
+	int resultHash = 0;
+	std::ifstream ifs2;
+	ifs2.open("dictionary/freq1.txt", std::ifstream::in);
+  Utils::load_dict(dh1,ifs2);
+
+	//find words in hash dictionary
+	resultHash = dh1.find("a cherry tree");
+	if(!resultHash) {
+		cout << "Test failed";
+	}
+	else {
+		cout << "Passed :D";
+	}
+	
+	resultHash = dh1.find("a chemical or biological");
+	if(!resultHash) {
+		cout << "Test failed";
+	}
+	else {
+		cout << "Passed :D";
+	}
+
+	resultHash = dh1.find("a child of privilege");
+	if(!resultHash) {
+		cout << "Test failed";
+	}
+	else {
+		cout << "Passed :D";
+	}
+	ifs.close();
+	
+	/* Testing BST dictionary */
+	DictionaryBST db1;
+	int resultBST = 0;
+	std::ifstream ifs3;
+	ifs3.open("dictionary/freq1.txt", std::ifstream::in);
+  Utils::load_dict(db1,ifs3);
+
+	//find words in BST dictionary
+	resultBST = db1.find("a cia officer");
+	if(!resultBST) {
+		cout << "Test failed";
+	}
+	else {
+		cout << "Passed :D";
+	}
+	
+	resultBST = db1.find("a clear sky");
+	if(!resultBST) {
+		cout << "Test failed";
+	}
+	else {
+		cout << "Passed :D";
+	}
+
+	resultBST = db1.find("a complete and accurate");
+	if(!resultBST) {
+		cout << "Test failed";
+	}
+	else {
+		cout << "Passed :D";
+	}
+
   return 0;
 }
