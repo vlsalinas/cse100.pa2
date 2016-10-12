@@ -428,7 +428,7 @@ int main(int argc, char** argv)
 		cout << "Test failed";
 	}
 	else {
-		cout << "Passed :D";
+		cout << "Passed :D" << endl;
 	}
 
   return 0;
