@@ -96,7 +96,9 @@ public:
 	unsigned int frequency;
 
 private:
-	
+
+	/* DFS helper for autocomplete */
+	DictionaryTrieNode *[] subSearch( DictionaryTrieNode * current );	
 };	 
 	 
 #endif // DICTIONARY_TRIE_H

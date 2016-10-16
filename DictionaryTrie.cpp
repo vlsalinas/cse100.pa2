@@ -121,7 +121,10 @@ bool DictionaryTrie::find(std::string word) const {
 	return false;
 }
 
-/* Return up to num_completions of the most frequent completions
+/* Param: std::string prefix (prefix of the words that it will return)
+ *				unsigned int num_completions (how many words to return)
+ * Return: std::vector<std::string> (vector with most frequent words) 
+ * Return up to num_completions of the most frequent completions
  * of the prefix, such that the completions are words in the dictionary.
  * These completions should be listed from most frequent to least.
  * If there are fewer than num_completions legal completions, this
@@ -132,10 +135,44 @@ bool DictionaryTrie::find(std::string word) const {
  * of the prefix)
  */
 std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix,
-    unsigned int num_completions)
-{
+    unsigned int num_completions) {
+
   std::vector<std::string> words;
+	unsigned int index = 0;
+	//current node
+	DictionaryTrieNode* curr = root;
+	std::unordered_map<char, DictionaryTrieNode*>::iterator search;
+
+	//find the word
+	while( index < prefix.length() ) {
+		
+		//search for the character
+		search = curr->letters.find( prefix.at( index ) );
+		if( search == curr->letters.end()  ) {
+			return words;
+		}
+		
+		else {
+			//node with character is there
+			curr = search->second;
+		}
+		index++;
+	}
+	
+	
+
   return words;
+}
+
+/* Param: DictionaryTrieNode * current (current node - where the prefix ends)
+ * Return: DictionaryTrieNode * [] (array of DictionaryTrieNode pointers of
+ *																	possible words)
+ * Uses Depth First Search to get the all the possible words 
+ */
+DictionaryTrieNode *[] subSearch( DictionaryTrieNode * current ) {
+
+	
+
 }
 
 /* Param: None.
