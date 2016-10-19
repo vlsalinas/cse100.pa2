@@ -13,6 +13,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <set>
 
 class DictionaryTrieNode;
 /**
@@ -51,6 +52,10 @@ public:
 
   /* Destructor */
   ~DictionaryTrie();
+
+	/* DFS helper for autocomplete */
+	std::set<DictionaryTrieNode *> subSearch( DictionaryTrieNode * current,
+																	unsigned int & index );	
 
 private:
   // Add your own data members and methods here
@@ -95,10 +100,12 @@ public:
 	/* frequency */
 	unsigned int frequency;
 
+	/* string of the word so far */
+	std::string myString;
+
+
 private:
 
-	/* DFS helper for autocomplete */
-	DictionaryTrieNode *[] subSearch( DictionaryTrieNode * current );	
 };	 
 	 
 #endif // DICTIONARY_TRIE_H

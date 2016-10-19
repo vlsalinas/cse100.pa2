@@ -10,6 +10,8 @@
 #include "DictionaryTrie.h"
 #include <unordered_map>
 #include <iterator>
+#include <vector>
+#include <set>
 
 /* Param: None.
  * Return: None.
@@ -55,10 +57,12 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq) {
 																		 (c, next) ).first;
 			curr = adding->second;
 			curr->myCharacter = c;
+			curr->myString = curr->myString + c;
 		}
 		
 		else {
 			//node with character is there
+			curr->myString = curr->myString + c;
 			curr = search->second;
 		}
 		index++;
@@ -137,17 +141,23 @@ bool DictionaryTrie::find(std::string word) const {
 std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix,
     unsigned int num_completions) {
 
+	//vector to be returned
   std::vector<std::string> words;
+	//vector with all possible words
+	std::set<DictionaryTrieNode *> possibleWords;
+	//index for DFS
 	unsigned int index = 0;
+	//index for finding prefix
+	unsigned int searchIndex = 0;
 	//current node
 	DictionaryTrieNode* curr = root;
 	std::unordered_map<char, DictionaryTrieNode*>::iterator search;
 
 	//find the word
-	while( index < prefix.length() ) {
+	while( searchIndex < prefix.length() ) {
 		
 		//search for the character
-		search = curr->letters.find( prefix.at( index ) );
+		search = curr->letters.find( prefix.at( searchIndex ) );
 		if( search == curr->letters.end()  ) {
 			return words;
 		}
@@ -156,10 +166,47 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix,
 			//node with character is there
 			curr = search->second;
 		}
-		index++;
+		searchIndex++;
 	}
-	
-	
+
+	//search in prefix's subtree	
+	possibleWords = subSearch( curr, index );
+	unsigned int loops = 0;
+
+	//return the first num_completion elements in a vector
+	for (std::set<DictionaryTrieNode* >::iterator adding=
+				possibleWords.begin(); adding != possibleWords.end(); ++adding) {
+		loops++;
+		if( loops >= possibleWords.size() ) {
+			break;
+		}
+
+		words.push_back( (*adding)->myString );
+		adding++;
+  }
+//	DictionaryTrieNode * firstNode;
+//	DictionaryTrieNode * secNode;
+//
+//	//sort the array
+//	for( unsigned int a = 0; a < (index + 1); a++ ) {
+//		
+//		for( unsigned int b = 0; b < index - a; b++ ) {
+//			firstNode = possibleWords[b];
+//			secNode = possibleWords[b+1];
+//			
+//			//compare freq
+//			if( firstNode->frequency > secNode->frequency ) {
+//				possibleWords[b] = possibleWords[b+1];
+//				possibleWords[b+1] = firstNode;
+//			}
+//		}
+//	}
+
+			//	//move to vector
+			//	for( unsigned int i = 0; i < num_completions; i++ ) {
+			//		DictionaryTrieNode * gotWord = possibleWords[index - i];
+			//		words.push_back(gotWord->myString);
+			//	}
 
   return words;
 }
@@ -169,10 +216,27 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix,
  *																	possible words)
  * Uses Depth First Search to get the all the possible words 
  */
-DictionaryTrieNode *[] subSearch( DictionaryTrieNode * current ) {
+std::set<DictionaryTrieNode *> DictionaryTrie::subSearch
+											( DictionaryTrieNode * current, unsigned int & index ) {
 
+	std::unordered_map<char, DictionaryTrieNode*>::iterator descend;
+	static std::set<DictionaryTrieNode *> found;																	//How to store the frequency and word in the set to return
 	
+	//search for children
+	for( descend = current->letters.begin(); descend != current->letters.end(); 
+			++descend ) {
 
+		//recurse to find all words
+		subSearch( descend -> second, index );
+
+		//check isWord
+		if( current->isWord ) {
+			found.insert( current );
+			index++;
+		}
+	}
+
+	return found;
 }
 
 /* Param: None.
