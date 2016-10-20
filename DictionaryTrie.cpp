@@ -16,7 +16,7 @@
 #include <stack>
 #include <string.h>
 #include <stdio.h>
-
+#include <iostream>
 
 /* Param: None.
  * Return: None.
@@ -164,11 +164,25 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix,
 	//node to be popped
 	DictionaryTrieNode* popNode;
 
+
+	//Checking invalid input
+	
+	//<0 num)completions or empty string
+	if( num_completions < 0 || prefix.length() == 0 ) {
+		std::cout << "Invalid input. Please retry with correct input." << std::endl;
+		return words;
+	}
 	//find the word
 	while( searchIndex < prefix.length() ) {
-		
+		char c = prefix.at( searchIndex );
+		//search for invalid characters
+		if( (c > 122 || c < 97) && c != 32 ) {
+			std::cout << "Invalid input. Please retry with correct input." << std::endl;
+			return words;
+		}
+
 		//search for the character
-		search = curr->letters.find( prefix.at( searchIndex ) );
+		search = curr->letters.find( c );
 		if( search == curr->letters.end()  ) {
 			return words;
 		}
@@ -194,10 +208,12 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix,
 		searchStack.pop();
 
 		//add children to stack
-		for( search = curr->letters.begin(); search != curr->letters.end(); search++ ) {
+		for( search = curr->letters.begin(); search != curr->letters.end();
+				 search++ ) {
 			searchStack.push( search->second );
 			if( search->second->isWord ) {
-				possibleWords.insert(std::make_pair(search->second->frequency, search->second->myString));
+				possibleWords.insert(std::make_pair(search->second->frequency, 
+														 search->second->myString));
 			}
 		}	
 	}		
