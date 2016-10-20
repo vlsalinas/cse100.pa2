@@ -10,6 +10,7 @@
 #ifndef DICTIONARY_TRIE_H
 #define DICTIONARY_TRIE_H
 
+#include <utility>
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -24,6 +25,13 @@ class DictionaryTrieNode;
  */
 class DictionaryTrie {
 public:
+
+	struct Cmp {
+    bool operator ()(const std::pair<unsigned int, std::string> &a, 
+										 const std::pair<unsigned int, std::string> &b) const {
+        return a.first > b.first;
+    }
+};
 
   /* Create a new Dictionary that uses a Trie back end */
   DictionaryTrie();
@@ -53,11 +61,7 @@ public:
   /* Destructor */
   ~DictionaryTrie();
 
-	/* DFS helper for autocomplete */
-	std::set<DictionaryTrieNode *> subSearch( DictionaryTrieNode * current,
-																	unsigned int & index );	
-
-private:
+	private:
   // Add your own data members and methods here
    
 	/* root node for trie */

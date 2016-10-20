@@ -6,12 +6,17 @@
  *  Assignement #:2 
  */
 
+#include <utility>
 #include "util.h"
 #include "DictionaryTrie.h"
 #include <unordered_map>
 #include <iterator>
 #include <vector>
 #include <set>
+#include <stack>
+#include <string.h>
+#include <stdio.h>
+
 
 /* Param: None.
  * Return: None.
@@ -56,13 +61,11 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq) {
 			adding = curr->letters.insert( std::pair<char, DictionaryTrieNode* >
 																		 (c, next) ).first;
 			curr = adding->second;
-			curr->myCharacter = c;
-			curr->myString = curr->myString + c;
+			//curr->myCharacter = c;
 		}
 		
 		else {
 			//node with character is there
-			curr->myString = curr->myString + c;
 			curr = search->second;
 		}
 		index++;
@@ -87,6 +90,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq) {
 	//set isWord label
 	curr->isWord = true;
 	curr->frequency = freq;
+	curr->myString = word;
 	return true;
 }
 
@@ -143,15 +147,22 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix,
 
 	//vector to be returned
   std::vector<std::string> words;
+
 	//vector with all possible words
-	std::set<DictionaryTrieNode *> possibleWords;
-	//index for DFS
-	unsigned int index = 0;
+	std::set<std::pair<unsigned int, std::string>, Cmp> possibleWords;
+
 	//index for finding prefix
 	unsigned int searchIndex = 0;
+
 	//current node
 	DictionaryTrieNode* curr = root;
 	std::unordered_map<char, DictionaryTrieNode*>::iterator search;
+	std::set<std::pair<unsigned int, std::string>, Cmp>::iterator searchFreq;
+
+	//stack for DFS
+	std::stack<DictionaryTrieNode*> searchStack;
+	//node to be popped
+	DictionaryTrieNode* popNode;
 
 	//find the word
 	while( searchIndex < prefix.length() ) {
@@ -169,74 +180,41 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix,
 		searchIndex++;
 	}
 
-	//search in prefix's subtree	
-	possibleWords = subSearch( curr, index );
-	unsigned int loops = 0;
 
-	//return the first num_completion elements in a vector
-	for (std::set<DictionaryTrieNode* >::iterator adding=
-				possibleWords.begin(); adding != possibleWords.end(); ++adding) {
-		loops++;
-		if( loops >= possibleWords.size() ) {
-			break;
-		}
+	searchStack.push(curr);
 
-		words.push_back( (*adding)->myString );
-		adding++;
-  }
-//	DictionaryTrieNode * firstNode;
-//	DictionaryTrieNode * secNode;
-//
-//	//sort the array
-//	for( unsigned int a = 0; a < (index + 1); a++ ) {
-//		
-//		for( unsigned int b = 0; b < index - a; b++ ) {
-//			firstNode = possibleWords[b];
-//			secNode = possibleWords[b+1];
-//			
-//			//compare freq
-//			if( firstNode->frequency > secNode->frequency ) {
-//				possibleWords[b] = possibleWords[b+1];
-//				possibleWords[b+1] = firstNode;
-//			}
-//		}
-//	}
-
-			//	//move to vector
-			//	for( unsigned int i = 0; i < num_completions; i++ ) {
-			//		DictionaryTrieNode * gotWord = possibleWords[index - i];
-			//		words.push_back(gotWord->myString);
-			//	}
-
-  return words;
-}
-
-/* Param: DictionaryTrieNode * current (current node - where the prefix ends)
- * Return: DictionaryTrieNode * [] (array of DictionaryTrieNode pointers of
- *																	possible words)
- * Uses Depth First Search to get the all the possible words 
- */
-std::set<DictionaryTrieNode *> DictionaryTrie::subSearch
-											( DictionaryTrieNode * current, unsigned int & index ) {
-
-	std::unordered_map<char, DictionaryTrieNode*>::iterator descend;
-	static std::set<DictionaryTrieNode *> found;																	//How to store the frequency and word in the set to return
-	
-	//search for children
-	for( descend = current->letters.begin(); descend != current->letters.end(); 
-			++descend ) {
-
-		//recurse to find all words
-		subSearch( descend -> second, index );
-
-		//check isWord
-		if( current->isWord ) {
-			found.insert( current );
-			index++;
-		}
+	if( curr->isWord ) {
+		possibleWords.insert(std::make_pair(curr->frequency, curr->myString));
 	}
 
-	return found;
+	//stack is not empty
+	while( !searchStack.empty() ) {
+		popNode = searchStack.top();
+		curr = popNode;
+		searchStack.pop();
+
+		//add children to stack
+		for( search = curr->letters.begin(); search != curr->letters.end(); search++ ) {
+			searchStack.push( search->second );
+			if( search->second->isWord ) {
+				possibleWords.insert(std::make_pair(search->second->frequency, search->second->myString));
+			}
+		}	
+	}		
+
+	unsigned int loops = 0; 
+	//start at beginning of set
+	searchFreq = possibleWords.begin();
+
+	for( loops = 0; loops <= num_completions; loops++ ) {
+		if( searchFreq == possibleWords.end() ) {
+			break;
+		}
+		words.push_back( searchFreq->second );
+		searchFreq++;
+	}
+		
+  return words;
 }
 
 /* Param: None.

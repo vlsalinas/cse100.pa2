@@ -6,6 +6,7 @@
  */
 
 #include<iostream>
+#include <sstream>
 #include<string>
 #include<algorithm>
 #include<set>
@@ -17,7 +18,9 @@
 #include <fstream>
 #define LETTERS 26
 using namespace std;
-
+using std::ifstream;
+using std::istream;
+using std::istringstream;
 
 int main(int argc, char** argv)
 {
@@ -333,104 +336,137 @@ int main(int argc, char** argv)
       cout << endl;
     }
 
+
+
 	//commented out because we deleted the dictionary folder for space
 	/* Testing Trie dictionary */
-  /*	DictionaryTrie dt1;
-	int resultTrie = 0;
 	std::ifstream ifs;
-	ifs.open("dictionary/freq1.txt", std::ios::binary);
-  Utils::load_dict(dt1,ifs);
+	ifs.open("freq1.txt", std::ios::binary);
+  DictionaryTrie* dt1 = new DictionaryTrie();
+	int resultTrie = 0;
+  Utils::load_dict(*dt1,ifs, 500000);
 
 	//find words in trie dictionary
-	resultTrie = dt1.find("a baby and she");
+	resultTrie = dt1->find("a baby and she");
 	if(!resultTrie) {
-		cout << "Test failed" << endl;
+		cout << "Test failed- a baby and she" << endl;
 	}
 	else {
-		cout << "Passed :D";
+		cout << "Passed :D" << endl;
 	}
 	
-	resultTrie = dt1.find("a bargain compared with");
+	resultTrie = dt1->find("a bargain compared with");
 	if(!resultTrie) {
 		cout << "Test failed" << endl;
 	}
 	else {
-		cout << "Passed :D";
+		cout << "Passed :D" << endl;
 	}
 
-	resultTrie = dt1.find("a broad view");
+	resultTrie = dt1->find("a broad view");
 	if(!resultTrie) {
 		cout << "Test failed" << endl;
 	}
 	else {
-		cout << "Passed :D";
+		cout << "Passed :D" << endl;
 	}
-	ifs.close(); */
+
+	resultTrie = dt1->find("a buddhist temple");
+	if(!resultTrie) {
+		cout << "Test failed b" << endl;
+	}
+	else {
+		cout << "Passed :D" << endl;
+	}
+
+//////////* Testing AutoComplete Function */
+/////////vector<std::string> ourAnswers = dt1->predictCompletions("aa", 3);
+/////////vector<std::string> rightAnswers;
+/////////
+/////////cout << "Testing autocomplete function...";
+///////////fill rightAnswers vector
+/////////rightAnswers.push_back("aah");
+/////////rightAnswers.push_back("aaron");
+/////////rightAnswers.push_back("aan");
+/////////
+///////////check vector
+/////////
+///////////failed 
+/////////if( !( ourAnswers == rightAnswers ) ) {
+/////////	
+/////////	cout << "failed for aa..." << endl;
+/////////}
+/////////
+/////////else {
+/////////	cout << "PASSED! :D " << endl;
+/////////}
+/////////	ifs.close(); 
 
 	/* Testing Hashtable dictionary */
-	/*DictionaryHashtable dh1;
-	int resultHash = 0;
 	std::ifstream ifs2;
-	ifs2.open("dictionary/freq1.txt", std::ios::binary);
-  Utils::load_dict(dh1,ifs2);
+	ifs2.open("freq1.txt", std::ios::binary);
+	DictionaryHashtable* dh1 = new DictionaryHashtable();
+	int resultHash = 0;
+  Utils::load_dict(*dh1,ifs2,9000);
 
 	//find words in hash dictionary
-	resultHash = dh1.find("a cherry tree");
+	resultHash = dh1->find("a cherry tree");
 	if(!resultHash) {
 		cout << "Test failed" << endl;
 	}
 	else {
-		cout << "Passed :D";
+		cout << "Passed :D" << endl;
 	}
 	
-	resultHash = dh1.find("a chemical or biological");
+	resultHash = dh1->find("a chemical or biological");
 	if(!resultHash) {
 		cout << "Test failed" << endl;
 	}
 	else {
-		cout << "Passed :D";
+		cout << "Passed :D" << endl;
 	}
 
-	resultHash = dh1.find("a child of privilege");
+	resultHash = dh1->find("a child of privilege");
 	if(!resultHash) {
 		cout << "Test failed" << endl;
 	}
 	else {
-		cout << "Passed :D";
+		cout << "Passed :D" << endl;
 	}
-	ifs.close(); */
+	ifs.close(); 
 	
 	/* Testing BST dictionary */
-	/* DictionaryBST db1;
-	int resultBST = 0;
 	std::ifstream ifs3;
-	ifs3.open("dictionary/freq1.txt", std::ios::binary);
-  Utils::load_dict(db1,ifs3);
+	ifs3.open("freq1.txt", std::ios::binary);
+	DictionaryBST* db1 = new DictionaryBST();
+	int resultBST = 0;
+  Utils::load_dict(*db1,ifs3, 11000);
 
 	//find words in BST dictionary
-	resultBST = db1.find("a cia officer");
-	if(!resultBST) {
-		cout << "Test failed" << endl;
-	}
-	else {
-		cout << "Passed :D";
-	}
-	
-	resultBST = db1.find("a clear sky");
-	if(!resultBST) {
-		cout << "Test failed" << endl;
-	}
-	else {
-		cout << "Passed :D";
-	}
-
-	resultBST = db1.find("a complete and accurate");
+	resultBST = db1->find("a cia officer");
 	if(!resultBST) {
 		cout << "Test failed" << endl;
 	}
 	else {
 		cout << "Passed :D" << endl;
-	} */
+	}
+	
+	resultBST = db1->find("a clear sky");
+	if(!resultBST) {
+		cout << "Test failed" << endl;
+	}
+	else {
+		cout << "Passed :D" << endl;
+	}
+
+	resultBST = db1->find("a complete and accurate");
+	if(!resultBST) {
+		cout << "Test failed" << endl;
+	}
+	else {
+		cout << "Passed :D" << endl;
+	} 
+
 
   return 0;
 }
