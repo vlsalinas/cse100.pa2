@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <ostream>
 #include <vector>
 #include <string>
 #include "DictionaryTrie.h"
@@ -33,7 +34,7 @@ long long Timer::end_timer() {
 }
 
 
-/*                                                                                                                                                                                                              
+/*                                                                            
  * Load the words in the stream into the dictionary BST
  */
 void Utils::load_dict(DictionaryBST& dict, istream& words)
@@ -70,7 +71,7 @@ void Utils::load_dict(DictionaryBST& dict, istream& words)
 }
 
 
-/*                                                                                                                                                                                                              
+/*                                                                            
  * Load num_words from words stream into the dictionary BST
  */
 void Utils::load_dict(DictionaryBST& dict, istream& words, unsigned int num_words)
@@ -110,7 +111,7 @@ void Utils::load_dict(DictionaryBST& dict, istream& words, unsigned int num_word
 
 
 
-/*                                                                                                                                                                                                              
+/*                                                                              
  * Load the words in the file into the dictionary hashtable
  */
 void Utils::load_dict(DictionaryHashtable& dict, istream& words)
@@ -146,7 +147,7 @@ void Utils::load_dict(DictionaryHashtable& dict, istream& words)
     }
 }
 
-/*                                                                                                                                                                                                              
+/*                                                                              
  * Load num_words from words stream into the dictionary hashtable 
  */
 void Utils::load_dict(DictionaryHashtable& dict, istream& words, unsigned int num_words)
@@ -185,7 +186,7 @@ void Utils::load_dict(DictionaryHashtable& dict, istream& words, unsigned int nu
 }
 
 
-/*                                                                                                                                                                                                              
+/*                                                                            
  * Load the words in the file into the dictionary trie
  */
 void Utils::load_dict(DictionaryTrie& dict, istream& words)
@@ -221,7 +222,7 @@ void Utils::load_dict(DictionaryTrie& dict, istream& words)
 }
 
 
-/*                                                                                                                                                                                                              
+/*                                                                      
  * Load num_words from words stream into the dictionary trie
  */
 void Utils::load_dict(DictionaryTrie& dict, istream& words, unsigned int num_words)
@@ -258,4 +259,40 @@ void Utils::load_dict(DictionaryTrie& dict, istream& words, unsigned int num_wor
     }
 }
 
+/*                                                                            
+ * Load num_words from words stream into the array
+ */
+void Utils::load_dict(std::string (&dict)[100], istream& words, unsigned int num_words)
+{
+  string junk;
+  string data = "";
+  string temp_word = "";
+  string word = "";
+  vector<string> word_string;
+  unsigned int i = 0;
+  unsigned int j = 0;
 
+  for(; j < num_words; j++)
+    {
+      getline(words, data);
+      if(words.eof()) break;
+      temp_word = "";
+      word = "";
+      data = data + " .";
+      istringstream iss(data);
+      iss >> junk;
+      while(1)
+        {
+          iss >> temp_word;
+          if(temp_word == ".") break;
+          if(temp_word.length() > 0) word_string.push_back(temp_word);
+        }
+      for(i = 0; i < word_string.size(); i++)
+        {
+          if(i > 0) word = word + " ";
+          word = word + word_string[i];
+        }
+      dict[j] = word;
+      word_string.clear();
+    }
+}

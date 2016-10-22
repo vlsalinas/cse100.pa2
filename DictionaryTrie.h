@@ -107,9 +107,6 @@ public:
 	/* string of the word so far */
 	std::string myString;
 
-
-private:
-
 };	 
 	 
 #endif // DICTIONARY_TRIE_H

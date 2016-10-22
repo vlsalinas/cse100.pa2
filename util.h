@@ -64,6 +64,10 @@ public:
      */
     void static load_dict(DictionaryTrie& dict, istream& words, unsigned int num_words);
 
+		/*
+		 * Load num_words from words stream into the dictionary array
+		 */
+		void static load_dict(std::string (&dict)[100], istream& words, unsigned int num_words);
 
 };
 
