@@ -42,12 +42,14 @@ int main( int argc, char* argv[] ) {
 	DictionaryTrie* dt1 = new DictionaryTrie();
 	//Timer
 	Timer timer;
+	
+	std::string name;
+	while( std::getline(ifs, name) ) {
+		sizeOfFile++;
+	} 
+	ifs.close();
+	ifs.open(argv[4], std::ios::binary);
 
-	//find the number of lines in the file
-//	sizeOfFile = std::count(std::istreambuf_iterator<char>(ifs), 
-//             std::istreambuf_iterator<char>(), '\n');
-
-	sizeOfFile = 4315669;
 	//go through num_iterations times
 	for ( int i = 0; i < num_iterations; i++ ) {
 		ifs.seekg( 0, ifs.beg );	
@@ -55,27 +57,61 @@ int main( int argc, char* argv[] ) {
 		//if there are fewer words in file
 		if( ( (min_size + i*step_size) ) > sizeOfFile ) {
 			cout << "Warning number of words in file is less than the number of" 
-					 << "words that will be loaded." << endl;
+					 << " words that will be loaded." << endl;
 		}
-	
+		
+		long size = min_size + i*step_size;
+		
 		//load from dictionary
-		Utils::load_dict(*dt1,ifs, min_size + i*step_size );
+		if( size <= sizeOfFile && size > 0 ) {
+			Utils::load_dict(*dt1,ifs, min_size + i*step_size );
+		}
+
+		//the size you want to load is bigger than the file size
+		else if( size > sizeOfFile ) {
+			Utils::load_dict(*dt1, ifs, size - sizeOfFile);
+		}
+
+		//size = 0
+		else {
+			break;
+		}
 
 		//sum of time
-		float sum = 0.0;
+		long sum = 0;
 		//num of nanoseconds find takes
 		long long findTime;
 		//num of find iterations
 		int findNum = 100;
 		//load array
 		std::vector<std::string> dictArray;
-		Utils::load_dict(dictArray, ifs, 100);
+
+		int find = 0;
+
+		//there are 100 or more words left that can be loaded
+		if( ( sizeOfFile - size ) >= 100 ) {
+			Utils::load_dict(dictArray, ifs, 100);
+			find = 100;
+		}
+
+		//if there are less than 100 words left but more than 0
+		else if( ( ( sizeOfFile - size ) < 100 ) && 
+						 ( sizeOfFile - size ) < 0 ) {
+			Utils::load_dict(dictArray, ifs, ( sizeOfFile - size ));
+			find = size - sizeOfFile;
+		}
+
+		//if there is nothing left to read
+		else {
+			find = 0;
+			break;
+		}
 
 		for( int numFinds = 0; numFinds < findNum; numFinds++ ) { 
 
 			timer.begin_timer();
 			//read the next 100 words from the dictionary file
-			for( int i = 0; i < 100; i++ ) {
+			for( int i = 0; i < find; i++ ) {
 				dt1->find(dictArray.at(i));
 			}
 			findTime = timer.end_timer();
@@ -86,11 +122,14 @@ int main( int argc, char* argv[] ) {
 		cout << (min_size + (i*step_size)) << '\t'<< (sum/findNum) << endl;
 	}
 	delete dt1;	
+	ifs.close();
+
 
 	/*			Benchmarking DictionaryBST			*/
 	cout << endl << "DictionaryBST " << endl;
 		DictionaryBST* dbst1 = new DictionaryBST();
 
+	ifs.open(argv[4], std::ios::binary);
 
 	//go through num_iterations times
 	for ( int i = 0; i < num_iterations; i++ ) {
@@ -101,41 +140,76 @@ int main( int argc, char* argv[] ) {
 			cout << "Warning number of words in file is less than the number of" 
 					 << "words that will be loaded." << endl;
 		}
-
+	
+		long size = min_size + i*step_size;
+		
 		//load from dictionary
-		Utils::load_dict(*dbst1,ifs, min_size + i*step_size );
+		if( size <= sizeOfFile && size > 0 ) {
+			Utils::load_dict(*dbst1,ifs, size );
+		}
+
+		//the size you want to load is bigger than the file size
+		else if( size > sizeOfFile ) {
+			Utils::load_dict(*dbst1, ifs, size - sizeOfFile);
+		}
+
+		//size = 0
+		else {
+			break;
+		}
 
 		//sum of time
-		float sum = 0.0;
+		long sum = 0;
 		//num of nanoseconds find takes
 		long long findTime;
 		//num of find iterations
 		int findNum = 100;
 		//load array
 		std::vector<std::string> dictArray;
-		Utils::load_dict(dictArray, ifs, 100);
+	
+		int find = 0;
+
+		//there are 100 or more words left that can be loaded
+		if( ( sizeOfFile - size ) >= 100 ) {
+			Utils::load_dict(dictArray, ifs, 100);
+			find = 100;
+		}
+
+		//if there are less than 100 words left but more than 0
+		else if( ( ( sizeOfFile - size ) < 100 ) && 
+						 ( sizeOfFile - size ) < 0 ) {
+			Utils::load_dict(dictArray, ifs, ( sizeOfFile - size ));
+			find = size - sizeOfFile;
+		}
+
+		//if there is nothing left to read
+		else {
+			find = 0;
+			break;
+		}
 
 		for( int numFinds = 0; numFinds < findNum; numFinds++ ) { 
 
 			timer.begin_timer();
 			//read the next 100 words from the dictionary file
-			for( int i = 0; i < 100; i++ ) {
-				//cout << dictArray.at(i) << endl;
+			for( int i = 0; i < find; i++ ) {
 				dbst1->find(dictArray.at(i));
 			}
-		findTime = timer.end_timer();
-		sum = sum + findTime;
+			findTime = timer.end_timer();
+			sum = sum + findTime;
 		}
 		
 		//print out average
 		cout << (min_size + (i*step_size)) << '\t'<< (sum/findNum) << endl;
 	}
 	delete dbst1;
+	ifs.close();
 
 	/*			Benchmarking DictionaryHashtable			*/
 	cout << endl << "DictionaryHashtable " << endl;
 	
-		DictionaryHashtable* dht1 = new DictionaryHashtable();
+	DictionaryHashtable* dht1 = new DictionaryHashtable();
+	ifs.open(argv[4], std::ios::binary);
 
 	//go through num_iterations times
 	for ( int i = 0; i < num_iterations; i++ ) {
@@ -148,22 +222,57 @@ int main( int argc, char* argv[] ) {
 		}
 
 		//load from dictionary
-		Utils::load_dict(*dht1,ifs, min_size + i*step_size );
+		long size = min_size + i*step_size;
+		
+		//load from dictionary
+		if( size <= sizeOfFile && size > 0 ) {
+			Utils::load_dict(*dht1,ifs, min_size + i*step_size );
+		}
+
+		//the size you want to load is bigger than the file size
+		else if( size > sizeOfFile ) {
+			Utils::load_dict(*dht1, ifs, size - sizeOfFile);
+		}
+
+		//size = 0
+		else {
+			break;
+		}
 
 		//sum of time
-		float sum = 0.0;
+		long sum = 0;
 		//num of nanoseconds find takes
 		long long findTime;
 		//num of find iterations
 		int findNum = 100;
 		//load array
 		std::vector<std::string> dictArray;
-		Utils::load_dict(dictArray, ifs, 100);
+
+		int find = 0;
+
+		//there are 100 or more words left that can be loaded
+		if( ( sizeOfFile - size ) >= 100 ) {
+			Utils::load_dict(dictArray, ifs, 100);
+			find = 100;
+		}
+
+		//if there are less than 100 words left but more than 0
+		else if( ( ( sizeOfFile - size ) < 100 ) && 
+						 ( sizeOfFile - size ) < 0 ) {
+			Utils::load_dict(dictArray, ifs, ( sizeOfFile - size ));
+			find = size - sizeOfFile;
+		}
+
+		//if there is nothing left to read
+		else {
+			find = 0;
+			break;
+		}
 
 		for( int numFinds = 0; numFinds < findNum; numFinds++ ) { 
 			timer.begin_timer();
 			//read the next 100 words from the dictionary file
-			for( int i = 0; i < 100; i++ ) {
+			for( int i = 0; i < find; i++ ) {
 				dht1->find(dictArray.at(i));
 			}
 			findTime = timer.end_timer();
