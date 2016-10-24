@@ -48,7 +48,8 @@ using namespace std;
  * Return: unsigned int - hash key to be used to insert into the hashtable
  *
  * Bernstein hash
- * It multiplies 33 to the current hash and adds the ascii value of the char.
+ * It multiplies 33 to the current hash and adds the ascii value of the
+ *	 char.
  */
 
 unsigned int djb_hash(std::string key, int len) {
@@ -85,7 +86,7 @@ int main( int argc, char* argv[] ) {
 	ifs.open(argv[1], std::ios::binary);
 
 	//std::string str(argv[1]);
-	int num_words = strtol( argv[2], &check, 10 );
+	float num_words = strtol( argv[2], &check, 10 );
 	/* array of words to 'insert' / just call hashfunctions on */
 	std::vector<std::string> dictArray;
 	/* array keeping track of hits */ 
@@ -126,13 +127,10 @@ int main( int argc, char* argv[] ) {
 		if( countArray2[result2] > max2 ) {
 			max2 = countArray2[result2];
 		}
-	//	cout << "Now max2 is: " << max2 << endl;
 	}
 
 	/* array for how many slots have x hits */
 	int hits1[max1 + 1];
-	int sum = 0;
-	std::vector<int> sums;
 	
 	/* zero initialize hits1 */
 	for( int i = 0; i < max1 + 1; i++ ) {
@@ -150,25 +148,32 @@ int main( int argc, char* argv[] ) {
 				hits1[j]++;
 			}
 		}
-		if( j != 0 ) {
-			sum += hits1[j];
-			sums.push_back(sum);
-		}
 		if( hits1[j] != 0 ) {
 			cout << j << "\t" << hits1[j] << endl;
 		}
 	}
-	//sum = sum - hits[0];
 
 
 	/* calculating averages */
 
 	float avg1;
+	int indexSum;
+	float totalSum = 0.0;
 	/* sum all steps for all words */
-	for( int s = 0; s < max1; s++ ) {
-		avg1 += (s+1)*sums.at(s); 
+	for( int s = 1; s < max1+1; s++ ) {
+		indexSum = 0;
+		for( int i = s; i < max1+1; i++ ) {
+			indexSum += hits1[i];
+		}
+		hits1[s] = indexSum;
 	}
-	avg1 = avg1 / num_words;
+
+	for( int j = 1; j < max1+1; j++ ) {
+		totalSum += hits1[j]*j;
+	}
+
+	avg1 = float(totalSum / num_words);
+
 	cout << endl << "The average number of steps for a successful search for hash " <<
 						"would be " << avg1 << endl;
 
@@ -185,8 +190,6 @@ int main( int argc, char* argv[] ) {
 			
 	/* array for how many slots have x hits */
 	int hits2[max2 + 1];
-	sum = 0;
-	std::vector<int> sums2;
 
 	/* zero initialize hits2 */
 	for( int i = 0; i < max2 + 1; i++ ) {
@@ -203,25 +206,32 @@ int main( int argc, char* argv[] ) {
 				hits2[j]++;
 			}
 		}
-		if( j != 0 ) { 
-			sum += hits2[j];
-			sums2.push_back(sum);
-		}
 		if( hits2[j] != 0 ) {
 			cout << j << "\t" << hits2[j] << endl;
 		}
 	}
-	//sum = sum - hits[0];
-
 
 	/* calculating averages */
-
 	float avg2;
+	totalSum = 0;
 	/* sum all steps for all words */
-	for( int s = 0; s < max2; s++ ) {
-		avg2 += (s+1)*sums2.at(s); 
+	for( int s = 1; s < max2+1; s++ ) {
+		//cout << "Current sum is " << avg2 << endl << endl; 
+		//avg2 += (s+1)*sums2.at(s);
+		indexSum = 0;
+		for( int i = s; i < max2+1; i++ ) {
+			indexSum += hits2[i];
+		}
+		/* reusing array */
+		hits2[s] = indexSum; 
 	}
-	avg2 = avg2 / num_words;
+	
+	for( int j = 1; j < max2+1; j++ ) {
+		totalSum += hits2[j]*j;
+	}
+	
+	avg2 = (float)(totalSum / num_words);
+
 	cout << endl << "The average number of steps for a successful search for djb_hash " <<
 						"would be " << avg2 << endl;
 
