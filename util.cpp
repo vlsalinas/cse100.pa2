@@ -262,7 +262,8 @@ void Utils::load_dict(DictionaryTrie& dict, istream& words, unsigned int num_wor
 /*                                                                            
  * Load num_words from words stream into the array
  */
-void Utils::load_dict(std::string (&dict)[100], istream& words, unsigned int num_words)
+void Utils::load_dict(std::vector<std::string> &dict, istream& words,
+										  unsigned int num_words)
 {
   string junk;
   string data = "";
@@ -292,7 +293,8 @@ void Utils::load_dict(std::string (&dict)[100], istream& words, unsigned int num
           if(i > 0) word = word + " ";
           word = word + word_string[i];
         }
-      dict[j] = word;
+      dict.push_back(word);
+			//std::cout << dict[j] << std::endl;
       word_string.clear();
     }
 }
