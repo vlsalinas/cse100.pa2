@@ -83,7 +83,7 @@ int main( int argc, char* argv[] ) {
 		}
 		
 		//print out average
-		cout << /* (min_size + (i*step_size)) << '\t'<< */ (sum/findNum) << endl;
+		cout << (min_size + (i*step_size)) << '\t'<< (sum/findNum) << endl;
 	}
 	delete dt1;	
 
@@ -128,7 +128,7 @@ int main( int argc, char* argv[] ) {
 		}
 		
 		//print out average
-		cout << /* (min_size + (i*step_size)) << '\t'<< */ (sum/findNum) << endl;
+		cout << (min_size + (i*step_size)) << '\t'<< (sum/findNum) << endl;
 	}
 	delete dbst1;
 
@@ -171,7 +171,7 @@ int main( int argc, char* argv[] ) {
 		}
 		
 		//print out average
-		cout << /* (min_size + (i*step_size)) << '\t' << */ (sum/findNum) << endl;
+		cout << (min_size + (i*step_size)) << '\t' << (sum/findNum) << endl;
 	}
 	delete dht1;
 
