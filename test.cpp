@@ -344,7 +344,7 @@ int main(int argc, char** argv)
 	ifs.open("freq1.txt", std::ios::binary);
   DictionaryTrie* dt1 = new DictionaryTrie();
 	int resultTrie = 0;
-  Utils::load_dict(*dt1,ifs, 500000);
+  Utils::load_dict(*dt1,ifs, 500);
 
 	//find words in trie dictionary
 	resultTrie = dt1->find("a baby and she");
@@ -407,7 +407,7 @@ int main(int argc, char** argv)
 	ifs2.open("freq1.txt", std::ios::binary);
 	DictionaryHashtable* dh1 = new DictionaryHashtable();
 	int resultHash = 0;
-  Utils::load_dict(*dh1,ifs2,9000);
+  Utils::load_dict(*dh1,ifs2,900);
 
 	//find words in hash dictionary
 	resultHash = dh1->find("a cherry tree");
@@ -440,7 +440,7 @@ int main(int argc, char** argv)
 	ifs3.open("freq1.txt", std::ios::binary);
 	DictionaryBST* db1 = new DictionaryBST();
 	int resultBST = 0;
-  Utils::load_dict(*db1,ifs3, 11000);
+  Utils::load_dict(*db1,ifs3, 110);
 
 	//find words in BST dictionary
 	resultBST = db1->find("a cia officer");
@@ -466,7 +466,6 @@ int main(int argc, char** argv)
 	else {
 		cout << "Passed :D" << endl;
 	} 
-
 
   return 0;
 }
